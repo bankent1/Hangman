@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 /*
 Builds the model to be used for the computer AI in the game of Hangman. It will 
 read from the results.txt file in the Stats directory and map the a letter to an
- array organized by likelyhood of directly following that letter.
+array organized by likelyhood of directly following that letter.
 
 Params: None
 Return: unordered_map which maps a letter to an array of all letters, organized 
