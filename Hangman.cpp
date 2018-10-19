@@ -3,7 +3,9 @@ Author: Travis Banken
 
 Hangman
 
-This program allows the user to play a game of hangman against the computer AI. The AI is developed from the stats found in the Stats directory of the project, specifically the results.txt file.
+This program allows the user to play a game of hangman against the computer AI. 
+The AI is developed from the stats found in the Stats directory of the project, 
+specifically the results.txt file.
 */
 
 #include<iostream>
@@ -32,10 +34,13 @@ int main(int argc, char *argv[]) {
 } 
 
 /*
-Builds the model to be used for the computer AI in the game of Hangman. It will read from the results.txt file in the Stats directory and map the a letter to an array organized by likelyhood of directly following that letter.
+Builds the model to be used for the computer AI in the game of Hangman. It will 
+read from the results.txt file in the Stats directory and map the a letter to an
+ array organized by likelyhood of directly following that letter.
 
 Params: None
-Return: unordered_map which maps a letter to an array of all letters, organized         by the likelyhood of that letter directly following the key.
+Return: unordered_map which maps a letter to an array of all letters, organized 
+        by the likelyhood of that letter directly following the key.
 */
 unordered_map<char, char[26]> buildModel() {
     ifstream infile;
