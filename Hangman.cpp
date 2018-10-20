@@ -15,8 +15,9 @@ specifically the results.txt file.
 
 using namespace std;
 
-unordered_map<char, char[26]> buildModel();
+unordered_map<char, vector<char>> buildModel();
 vector<string> split(string);
+char* getLettFreq();
 
 int main(int argc, char *argv[]) {
     cout << "=======================" << endl;
@@ -30,7 +31,15 @@ int main(int argc, char *argv[]) {
     cout << "Word: " << word << endl;
     cout << "Length: " << word.length() << endl;
 
-    buildModel();
+    unordered_map<char, vector<char>> modelMap = buildModel();
+
+    for (auto it = modelMap.begin(); it != modelMap.end(); it++) {
+        cout << it->first << ": [";
+        for (int i = 0; i < it->second.size(); i++) {
+            cout << it->second.at(i) << ", ";
+        }
+        cout << "]" << endl;
+    }
 } 
 
 /*
@@ -42,7 +51,7 @@ Params: None
 Return: unordered_map which maps a letter to an array of all letters, organized 
         by the likelyhood of that letter directly following the key.
 */
-unordered_map<char, char[26]> buildModel() {
+unordered_map<char, vector<char>> buildModel() {
     ifstream infile;
     string filename ("./Stats/results.txt");
     infile.open(filename);
@@ -54,10 +63,22 @@ unordered_map<char, char[26]> buildModel() {
     }
 
     // read the file
-    unordered_map<char, char[26]>  modelMap;
+    unordered_map<char, vector<char>>  modelMap;
     string line;
+    char key;
     while (getline(infile, line)) {
-        cout << line << endl;
+        vector<string> vline = split(line);
+        if (vline.size() == 0) {
+            continue;
+        }
+        if (vline.at(0) == "==") {
+            vector<char> v;
+            key = vline.at(1).at(0);
+            modelMap[key] = v;
+        }
+        else {
+            modelMap.at(key).push_back(vline[0].at(0));
+        }
     }
 
     infile.close();
@@ -85,4 +106,18 @@ vector<string> split(string str) {
         }
     }
     return splitStr;
+}
+
+/*
+Returns an array of letters of the alphabet organized by the frequency of 
+occurance in the english language.
+
+Params: None
+Return: Char array with letters sorted by frequency used
+*/
+char* getLettFreq() {
+    char lettFreq[26] = {'e', 't', 'a', 'o', 'i', 'n', 's', 'r', 'h', 'd', 'l', 
+                        'u', 'c', 'm', 'f', 'y', 'w', 'g', 'p', 'b', 'v', 'k',
+                        'x', 'q', 'j', 'z'};
+    return lettFreq;
 }
