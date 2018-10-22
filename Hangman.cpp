@@ -17,7 +17,12 @@ using namespace std;
 
 unordered_map<char, vector<char>> buildModel();
 vector<string> split(string);
-char* getLettFreq();
+vector<char> getLettFreq();
+vector<char> initGuessState(int);
+char getNextLett(vector<char>);
+vector<char> processGuess(string, vector<char>, char, int*);
+void printGuessState(vector<char>);
+bool wordGuessed(vector<char>, string);
 
 int main(int argc, char *argv[]) {
     cout << "=======================" << endl;
@@ -32,14 +37,42 @@ int main(int argc, char *argv[]) {
     cout << "Length: " << word.length() << endl;
 
     unordered_map<char, vector<char>> modelMap = buildModel();
+    vector<char> lettFreq;
+    lettFreq = getLettFreq();
 
-    for (auto it = modelMap.begin(); it != modelMap.end(); it++) {
-        cout << it->first << ": [";
-        for (int i = 0; i < it->second.size(); i++) {
-            cout << it->second.at(i) << ", ";
+    vector<char> guessState = initGuessState(word.length());
+    int lives = 10;
+    char guess;
+    while (lives > 0) {
+        cout << "Lives = " << lives << endl;
+        printGuessState(guessState);
+        char c = getNextLett(guessState);
+        if (c == '_') {
+            guess = lettFreq.at(0);
+            cout << "Guessing " << lettFreq.at(0) << endl;
+            lettFreq.erase(lettFreq.begin() + 0);
         }
-        cout << "]" << endl;
+        else {
+            guess = modelMap[c].at(0);
+            cout << "Guessing " << modelMap[c].at(0) << endl;
+            modelMap[c].erase(modelMap[c].begin() + 0);
+        }
+        guessState = processGuess(word, guessState, guess, &lives);
+        if (wordGuessed(guessState, word)) {
+            cout << "WORD GUESSED, YOU LOSE!" << endl;
+            break;
+        }
     }
+
+    cout << "WORD NOT GUESSED, YOU WIN!" << endl;
+
+    // for (auto it = modelMap.begin(); it != modelMap.end(); it++) {
+    //     cout << it->first << ": [";
+    //     for (int i = 0; i < it->second.size(); i++) {
+    //         cout << it->second.at(i) << ", ";
+    //     }
+    //     cout << "]" << endl;
+    // }
 } 
 
 /*
@@ -109,15 +142,91 @@ vector<string> split(string str) {
 }
 
 /*
-Returns an array of letters of the alphabet organized by the frequency of 
+Returns a vector of letters of the alphabet organized by the frequency of 
 occurance in the english language.
 
 Params: None
-Return: Char array with letters sorted by frequency used
+Return: vector with letters sorted by frequency used
 */
-char* getLettFreq() {
+vector<char> getLettFreq() {
     char lettFreq[26] = {'e', 't', 'a', 'o', 'i', 'n', 's', 'r', 'h', 'd', 'l', 
                         'u', 'c', 'm', 'f', 'y', 'w', 'g', 'p', 'b', 'v', 'k',
                         'x', 'q', 'j', 'z'};
-    return lettFreq;
+    vector<char> v;
+
+    for (int i = 0; i < 26; i++) {
+        v.push_back(lettFreq[i]);
+    }
+
+    return v;
+}
+
+/*
+Initializes the array for keeing track of the current guess state for the 
+computer.
+
+Params:
+*/
+vector<char> initGuessState(int size) {
+    vector<char> v;
+    for (int i = 0; i < size; i++) {
+        v.push_back('_');
+    }
+    return v;
+}
+
+/*
+
+*/
+char getNextLett(vector<char> wordState) {
+    for (int i = 0; i < wordState.size(); i++) {
+        //cout << "Char = " << wordState.at(i);
+        if (wordState.at(i) != '_') {
+            //cout << "Returned!";
+            return wordState.at(i);
+        }
+    }
+    cout << endl;
+    return '_';
+}
+
+/*
+
+*/
+vector<char> processGuess(string word, vector<char> wordState, char guess, 
+                            int *lives) {
+    bool found = false;
+    for (int i = 0; i < word.size(); i++) {
+        if (guess == word.at(i)) {
+            wordState.at(i) = guess;
+            found = true;
+        }
+    }
+    if (!found) {
+        *lives -= 1;
+    }
+    return wordState;
+}
+
+/*
+
+*/
+void printGuessState(vector<char> guessState) {
+    for (int i = 0; i < guessState.size(); i++) {
+        cout << guessState.at(i);
+    }
+    cout << endl;
+}
+
+/*
+
+*/
+bool wordGuessed(vector<char> guessState, string word) {
+    for (int i = 0; i < word.size(); i++) {
+        if (guessState.at(i) != word.at(i)) {
+            return false;
+        }
+    }
+
+    return true;
 }
