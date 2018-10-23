@@ -179,14 +179,20 @@ vector<char> initGuessState(int size) {
 
 */
 char getNextLett(vector<char> wordState) {
+    bool found = false;
+    char lett;
     for (int i = 0; i < wordState.size(); i++) {
         //cout << "Char = " << wordState.at(i);
         if (wordState.at(i) != '_') {
             //cout << "Returned!";
-            return wordState.at(i);
+            found = true;
+            lett = wordState.at(i);
+        }
+        else if (found) {
+            return lett;
         }
     }
-    cout << endl;
+    //cout << endl;
     return '_';
 }
 

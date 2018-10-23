@@ -23,7 +23,7 @@ struct Letters {
 unordered_map<char, Letters> initLettMap();
 unordered_map<char, Letters> readFile(FILE*, unordered_map<char, Letters>);
 void printFreq(unordered_map<char, Letters>);
-int* sort(int*, int);
+int* sort(int[], int);
 
 
 int main(int argc, char *args[]) {		
@@ -136,7 +136,7 @@ Sorts the given array using insertion sort algorithm.
 Params: arr - int array to be sorted
 Returns: int array contianing the sorted letter values (i.e. A, B, ...)
 */
-int* sort(int *arr, int size) {
+int* sort(int arr[], int size) {
 	static int pos[26] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 			 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
 
