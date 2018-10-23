@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     char guess;
     while (lives > 0) {
         cout << "Lives = " << lives << endl;
-        printGuessState(guessState);
+        
         char c = getNextLett(guessState);
         if (c == '_') {
             guess = lettFreq.at(0);
@@ -57,14 +57,18 @@ int main(int argc, char *argv[]) {
             cout << "Guessing " << modelMap[c].at(0) << endl;
             modelMap[c].erase(modelMap[c].begin() + 0);
         }
+        printGuessState(guessState);
         guessState = processGuess(word, guessState, guess, &lives);
         if (wordGuessed(guessState, word)) {
             cout << "WORD GUESSED, YOU LOSE!" << endl;
-            break;
+            return 0;
         }
+        cout << endl;
     }
 
+    // return -1 if computer lost
     cout << "WORD NOT GUESSED, YOU WIN!" << endl;
+    return -1;
 
     // for (auto it = modelMap.begin(); it != modelMap.end(); it++) {
     //     cout << it->first << ": [";

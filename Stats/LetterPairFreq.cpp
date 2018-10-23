@@ -23,7 +23,7 @@ struct Letters {
 unordered_map<char, Letters> initLettMap();
 unordered_map<char, Letters> readFile(FILE*, unordered_map<char, Letters>);
 void printFreq(unordered_map<char, Letters>);
-int* sort(int[], int);
+void sort(int[], int[], int);
 
 
 int main(int argc, char *args[]) {		
@@ -121,7 +121,8 @@ void printFreq(unordered_map<char, Letters> lettMap) {
 
     for (auto iter = lettMap.begin(); iter != lettMap.end(); ++iter) {
         outfile << "== " << iter->first << " ==" << endl;
-        int *pos = sort(iter->second.count, 26);
+        int pos[26];
+        sort(iter->second.count, pos, 26);
         for (int i = 0; i < 26; i++) {
             outfile << (char)(pos[i]+'a') << " -- " << iter->second.count[i] << endl;
         }
@@ -136,10 +137,12 @@ Sorts the given array using insertion sort algorithm.
 Params: arr - int array to be sorted
 Returns: int array contianing the sorted letter values (i.e. A, B, ...)
 */
-int* sort(int arr[], int size) {
-	static int pos[26] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-			 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
-
+void sort(int arr[], int pos[], int size) {
+	// int pos[26] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+	// 		 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+    for (int i = 0; i < 26; i++) {
+        pos[i] = i;
+    }
 	for (int i = 1; i < size; i++) {
 		int j = i;
 		while (j != 0 && arr[j] > arr[j-1]) {
@@ -154,5 +157,5 @@ int* sort(int arr[], int size) {
 			j--;
 		}	
 	} // end for	
-	return pos;
+	//return pos;
 }
