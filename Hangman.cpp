@@ -180,7 +180,11 @@ vector<char> initGuessState(int size) {
 }
 
 /*
+Gets the left most letter in the guessed word to be used for processing the 
+next guess.
 
+Params: wordState - the current state of the guess known to the guessing ai
+Return: the left most char in the known word state, returns '_' if none found.
 */
 char getNextLett(vector<char> wordState) {
     bool found = false;
@@ -201,7 +205,14 @@ char getNextLett(vector<char> wordState) {
 }
 
 /*
+Checks if the ai has successfuly guessed a char in the word. 
 
+Params: word - the word the ai is trying to guess
+		wordState - the current computer guess
+		guess - the last char the computer guessed.
+		lives - the amount of chances that the computer has left to guess the 
+		the word correctly
+Return: the modified state of the guessed word.
 */
 vector<char> processGuess(string word, vector<char> wordState, char guess, 
                             int *lives) {
@@ -219,7 +230,9 @@ vector<char> processGuess(string word, vector<char> wordState, char guess,
 }
 
 /*
+Prints out the current state of the computer guess.
 
+Params: guessState - the current state of the computer guess
 */
 void printGuessState(vector<char> guessState) {
     for (int i = 0; i < guessState.size(); i++) {
@@ -229,7 +242,10 @@ void printGuessState(vector<char> guessState) {
 }
 
 /*
+Checks if the computer has successfuly guessed the word
 
+Params: guessedState - the current state of the compute's guess
+		word - the word the computer is trying to guess
 */
 bool wordGuessed(vector<char> guessState, string word) {
     for (int i = 0; i < word.size(); i++) {
